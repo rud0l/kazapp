@@ -17,6 +17,12 @@ logger = get_task_logger(__name__)
 
 @celery.task()
 def traverse(rootpath, dbname):
+	'''
+	traverses the file system starting from rootpath
+	will probably fail in the presence of a cycle (hardlinked)
+	ignores soft links.
+	this can be paralellized with a small effort. (so os.walk was not used)
+	'''
 
 	queue = []
 	queue.append(rootpath)
