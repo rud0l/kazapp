@@ -1,0 +1,3 @@
+
+BROKER = 'amqp://guest@sugar//'
+

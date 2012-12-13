@@ -60,4 +60,3 @@ class Backend:
 		'''issue a query to write file data'''
 		self.cur.execute("insert into files values('%s', '%s', '%s')" %  (filedata.path, filedata.size, filedata.date) )
 
-

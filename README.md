@@ -8,35 +8,48 @@ sample python/flask/sqlite app
 * Tested with the following configuration
 python 2.66 on Ubuntu 10.10
 celery 3.0 over rabbitmq
+broker configured as in appconfig.py
 * The traverse code ignores symlinks and will probably fail in the presence of hard links with cycles
 * The tests assume presence of a populated /usr/share/locale and /usr/share/locale/all_languages
 
-== Run the app
+== Run the app and test suite
 
-1. Populate DB 
+Configure broker in appconfig.py
 
-$python traverse.py [rootfolder]
+1. Terminal 1: Start the workers
+$python tasks.py worker -l info
 
-where rootfolder is the full path to the root folder to traverse.
-This populates the SQLite DB kazapp.db with file info. 
+2. Terminal 2:Start the web app with the root path to scan
+$ python kazapp.py /usr/share/locale
 
-2. Query the web app
+where the argument is the full path to the root folder to traverse.
+This kicks off the worker to populate the SQLite DB kazapp.db with file info, and starts the flask loop
 
-$python kazapp.py
+3. Terminal 3:Run the tests 
+$ python testall.py
 
-$wget 127.0.0.1:5001/get_all_files
+Manually, you can test as:
 
-$wget 127.0.0.1:5001/get_file_info?path=path/to/file
+$wget 127.0.0.1:5001/get_file_list -O t1
+$wget 127.0.0.1:5001/get_file_info?path=/usr/share/locale/all_languages -O t2
 
-== Run the tests
-
-3. Run the test suite
-
-$python testall.py
-
-(ensure the web app kazapp.py is running first)
 
 == REST API Documentation
 
-== File layout
+1. get_file_list
+
+returns a list of files as a map in the format { "status" : "" , "data": [] }
+status = success or scanning of error
+
+
+2. get_file_info 
+
+returns a dict of file metadata as a map in the format { "status" : "" , "data": { }  }
+status = success or scanning of error
+metadata has date, path, size
+
+== TODO 
+
+1. use batch inserts and commit after each batch 
+2. the error handling is weak. 
 

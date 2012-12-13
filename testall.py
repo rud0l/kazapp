@@ -3,10 +3,14 @@ Create test fixture
 	- directory structure and files
 	- populate test db
 
-Invoke method get_all_files, check count
+-- compares bash count of files in /usr/share/locale vs count from  db
+Invoke method get_file_list, check count	
 Invoke method get_file_info, check file info
+
+-- compares bash count of files in /usr/share/locale vs count from webapp
 Send web request for REST Api get_all_files, check count
 Send web request for REST Api get_file_info, check file info
+
 '''
 
 import urllib
@@ -20,7 +24,7 @@ from threading import Thread
 # app modules
 import kazapp
 import backend
-import traverse
+import tasks
 
 FULLSETUP = False
 
@@ -39,7 +43,7 @@ class KazappTest(unittest.TestCase):
 
 		global FULLSETUP
 		if FULLSETUP == True:
-			traverse.traverse("/usr/share/locale", "test.db")
+			tasks.traverse("/usr/share/locale", "test.db")
 
 		# get file count from bash
 		cmd = "find /usr/share/locale -not -type d -not -type l"
@@ -90,7 +94,7 @@ class KazappTest(unittest.TestCase):
 		surl = "http://127.0.0.1:5001/get_file_list"
 
 		ret = json.loads( urllib.urlopen(surl).readline() )
-		self.assertTrue(ret['retcode'] == 0)
+		self.assertTrue(ret['status'] == "success")
 
 		logging.info("webapp says db has %s files" % len( ret['data'] ) )
 		logging.info("bash says %s files" % self.testfiles_count)
@@ -106,7 +110,7 @@ class KazappTest(unittest.TestCase):
 		logging.info( "testWebGetFileInfo: %s" % surl )
 
 		ret = json.loads( urllib.urlopen(surl).readline() )
-		self.assertTrue(ret['retcode'] == 0)
+		self.assertTrue(ret['status'] == "success")
 		
 		logging.info( "testWebGetFileInfo: %s %s" % (ret['data']['size'], ret['data']['date']) )
 		self.assertEqual(ret['data']['size'], self.testfile_size)
