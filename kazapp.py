@@ -17,6 +17,10 @@ g_taskid = None
 
 @app.route('/get_file_list')
 def get_file_list():
+	'''
+	returns a list of files as a map in the format { "status" : "" , "data": [] }
+	status = success or scanning of error
+	'''
 
 	global g_taskid
 	ar = AsyncResult(g_taskid)
@@ -31,6 +35,11 @@ def get_file_list():
 
 @app.route('/get_file_info')
 def get_file_info():
+	'''
+	returns a dict of file metadata as a map in the format { "status" : "" , "data": { }  }
+	status = success or scanning of error
+	metadata has date, path, size
+	'''
 
 	global g_taskid
 	ar = AsyncResult(g_taskid)
