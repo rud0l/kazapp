@@ -1,7 +1,14 @@
 kazapp
 ======
 
-sample python/flask/sqlite/celery/unittest app
+Sample python/flask/sqlite/celery/unittest app
+
+tasks.py is the celery task to scan the file system using iterative breadth first search. (Idea was to be able to paralellize this later.)
+
+kazapp.py is the flask web service that kicks of the scanning process and serves json
+
+backend.py is the DB layer.
+
 
 == Release Notes
 
