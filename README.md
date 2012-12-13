@@ -9,6 +9,7 @@ kazapp.py is the flask web service that kicks of the scanning process and serves
 
 backend.py is the DB layer.
 
+testall.py has unit tests for backend.py and kazapp.py http clients
 
 == Release Notes
 
