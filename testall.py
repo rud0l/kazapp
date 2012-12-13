@@ -26,7 +26,7 @@ import kazapp
 import backend
 import tasks
 
-FULLSETUP = False
+FULLSETUP = True
 
 class KazappTest(unittest.TestCase):
 
