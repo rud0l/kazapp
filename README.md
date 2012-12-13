@@ -1,7 +1,7 @@
 kazapp
 ======
 
-sample python/flask/sqlite app
+sample python/flask/sqlite/celery/unittest app
 
 == Release Notes
 
